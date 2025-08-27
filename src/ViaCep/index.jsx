@@ -1,8 +1,11 @@
 import axios from "axios";
+import {useState, useEffect} from 'react'
 
 const ViaCep = () => {
     
     let cep = "";
+    let logradouro = "";
+    let bairro = "";
 
     const handleBuscarCep = () => {
         cep = document.querySelector('.cep').value;
@@ -14,11 +17,15 @@ const ViaCep = () => {
     const buscarCep = () => {
         axios.get(`https://viacep.com.br/ws/${cep}/json`)
         .then((response) => {
-            alert(JSON.stringify(response.data));
+            var endereco = response.data;
+            alert(JSON.stringify(endereco));
+            logradouro = endereco.logradouro;
+            bairro = endereco.bairro;
+            alert(logradouro);
+            document.getElementById("logradouro").value = logradouro;
+            document.getElementById("bairro").value = bairro;
         })
     }
-
-
 
     return (
         <div className="ViaCep">
@@ -29,6 +36,22 @@ const ViaCep = () => {
             <button onClick={handleBuscarCep}>
                 Buscar
             </button>
+            <div className="Endereco">
+                <input className="logradouro"
+                    type="text" 
+                    placeholder="logradouro"
+                    id="logradouro"
+                    name="logradouro"
+                    value={logradouro}
+                />
+                <input className="bairro"
+                    type="text" 
+                    placeholder="bairro"
+                    id="bairro"
+                    name="bairro"
+                    value={bairro}
+                />
+            </div>
         </div>
     )
 }
